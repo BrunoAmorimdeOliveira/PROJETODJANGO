@@ -33,14 +33,27 @@ class Produto(models.Model):
     def __str__(self):
         return f"Nome: {self.nome}, Categoria: {self.categoria}, Tipo {self.tipo}, Preço: {self.preco}"
 
+
+class Cor(models.Model):
+    nome = models.CharField(max_length=200, null=True, blank=True)
+    codigo = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.nome)
+
+
 class ItemEstoque(models.Model):
     produto = models.ForeignKey(Produto, null=True, blank=True, on_delete=models.SET_NULL)
-    cor = models.CharField(max_length=200, null=True, blank=True)
+    cor = models.ForeignKey(Cor, null=True, blank=True, on_delete=models.SET_NULL)
     tamanho = models.CharField(max_length=200, null=True, blank=True)
     quantidade = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f"{self.produto.nome}, Tamanho: {self.tamanho}, Cor: {self.cor.nome}"
+
+
 class Endereco(models.Model):
-    rua = models.CharField(max_length=200, null=True, blank=True)
+    rua = models.CharField(max_length=400, null=True, blank=True)
     numero = models.IntegerField(default=0)
     completmento = models.CharField(max_length=200, null=True, blank=True)
     cep = models.CharField(max_length=200, null=True, blank=True)
@@ -59,3 +72,13 @@ class ItensPedido(models.Model):
     item_estoque = models.ForeignKey(ItemEstoque, null=True, blank=True, on_delete=models.SET_NULL)
     quantidade = models.IntegerField(default=0)
     pedido = models.ForeignKey(Pedido, null=True, blank=True, on_delete=models.SET_NULL)  
+
+
+class Banner(models.Model):
+    imagem = models.ImageField(null=True, blank=True)
+    link_destino = models.CharField(max_length=400, null=True, blank=True)
+    ativo = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.link_destino} - Ativo: {self.ativo}"
+    
